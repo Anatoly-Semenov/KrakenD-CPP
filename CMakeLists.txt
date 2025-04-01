@@ -35,6 +35,7 @@ add_executable(krakend_proxy
     src/grpc/client.cpp
     src/grpc/server.cpp
     src/common/env_validator.cpp
+    src/common/app_lifecycle.cpp
 )
 
 # Включаем директории

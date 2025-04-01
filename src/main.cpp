@@ -1,6 +1,7 @@
 #include "http/server.hpp"
 #include "grpc/client.hpp"
 #include "common/env_validator.hpp"
+#include "common/app_lifecycle.hpp"
 #include <dotenv.h>
 #include <iostream>
 #include <signal.h>
@@ -9,15 +10,14 @@ std::unique_ptr<HttpServer> http_server;
 std::unique_ptr<GrpcClient> grpc_client;
 
 void signal_handler(int signum) {
-    std::cout << "Получен сигнал завершения. Останавливаем сервер..." << std::endl;
-    if (http_server) {
-        http_server->stop();
-    }
-    exit(signum);
+    std::cout << "Получен сигнал завершения (" << signum << "). Инициируем graceful shutdown..." << std::endl;
+    AppLifecycle::getInstance().shutdown();
 }
 
 int main() {
     try {
+        AppLifecycle::getInstance().initialize();
+
         dotenv::init();
 
         try {
@@ -34,6 +34,19 @@ int main() {
         grpc_client = std::make_unique<GrpcClient>(grpc_address);
 
         http_server = std::make_unique<HttpServer>(http_host, http_port);
+
+        AppLifecycle::getInstance().addShutdownHandler([&http_server]() {
+            if (http_server) {
+                std::cout << "Остановка HTTP сервера..." << std::endl;
+                http_server->stop();
+            }
+        });
+
+        AppLifecycle::getInstance().addShutdownHandler([&grpc_client]() {
+            if (grpc_client) {
+                std::cout << "Закрытие gRPC соединения..." << std::endl;
+            }
+        });
 
         signal(SIGINT, signal_handler);
         signal(SIGTERM, signal_handler);
