@@ -1,0 +1,106 @@
+{
+    "version": 3,
+    "name": "API Gateway",
+    "port": 8080,
+    "cache_ttl": "3600s",
+    "timeout": "3s",
+    "read_timeout": "1s",
+    "write_timeout": "1s",
+    "idle_timeout": "120s",
+    "read_header_timeout": "1s",
+    "max_idle_connections": 150,
+    "max_idle_connections_per_host": 150,
+    "endpoints": [
+        {
+            "endpoint": "/users/login",
+            "method": "POST",
+            "output_encoding": "json",
+            "backend": [
+                {
+                    "url_pattern": "/login",
+                    "encoding": "json",
+                    "method": "POST",
+                    "host": ["http://localhost:8081"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/users/logout",
+            "method": "POST",
+            "output_encoding": "json",
+            "backend": [
+                {
+                    "url_pattern": "/logout",
+                    "encoding": "json",
+                    "method": "POST",
+                    "host": ["http://localhost:8081"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/users/register",
+            "method": "POST",
+            "output_encoding": "json",
+            "backend": [
+                {
+                    "url_pattern": "/register",
+                    "encoding": "json",
+                    "method": "POST",
+                    "host": ["http://localhost:8081"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/users/refresh",
+            "method": "POST",
+            "output_encoding": "json",
+            "backend": [
+                {
+                    "url_pattern": "/refresh",
+                    "encoding": "json",
+                    "method": "POST",
+                    "host": ["http://localhost:8081"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/payments",
+            "method": "POST",
+            "output_encoding": "json",
+            "backend": [
+                {
+                    "url_pattern": "/payments",
+                    "encoding": "json",
+                    "method": "POST",
+                    "host": ["http://localhost:8082"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/payments/callback",
+            "method": "POST",
+            "output_encoding": "json",
+            "backend": [
+                {
+                    "url_pattern": "/payments/callback",
+                    "encoding": "json",
+                    "method": "POST",
+                    "host": ["http://localhost:8082"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/payments/{payment_id}/status",
+            "method": "GET",
+            "output_encoding": "json",
+            "backend": [
+                {
+                    "url_pattern": "/payments/{payment_id}/status",
+                    "encoding": "json",
+                    "method": "GET",
+                    "host": ["http://localhost:8082"]
+                }
+            ]
+        }
+    ]
+} 
