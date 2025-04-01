@@ -30,8 +30,11 @@ target_include_directories(dotenv INTERFACE
 # Основной исполняемый файл
 add_executable(krakend_proxy
     src/main.cpp
-        src/transport/http_server.cpp
-        src/transport/grpc_client.cpp
+    src/http/server.cpp
+    src/http/client.cpp
+    src/grpc/client.cpp
+    src/grpc/server.cpp
+    src/common/env_validator.cpp
 )
 
 # Включаем директории

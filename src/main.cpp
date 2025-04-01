@@ -1,5 +1,6 @@
-#include "http_server.hpp"
-#include "grpc_client.hpp"
+#include "http/server.hpp"
+#include "grpc/client.hpp"
+#include "common/env_validator.hpp"
 #include <dotenv.h>
 #include <iostream>
 #include <signal.h>
@@ -17,8 +18,14 @@ void signal_handler(int signum) {
 
 int main() {
     try {
-
         dotenv::init();
+
+        try {
+            EnvValidator::validate();
+        } catch (const EnvValidationError& e) {
+            std::cerr << "Ошибка валидации конфигурации: " << e.what() << std::endl;
+            return 1;
+        }
 
         const std::string http_host = std::getenv("HTTP_HOST") ?: "0.0.0.0";
         const uint16_t http_port = std::stoi(std::getenv("HTTP_PORT") ?: "8080");

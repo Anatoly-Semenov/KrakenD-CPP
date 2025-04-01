@@ -108,9 +108,9 @@ KRAKEND_LOG_LEVEL=info
 │   ├── grpc/             # gRPC компоненты
 │   │   ├── client.hpp    # gRPC клиент для KrakenD
 │   │   └── server.hpp    # gRPC сервер
-│   └── common/           # Общие компоненты
-│       ├── config.hpp    # Конфигурация приложения
-│       └── types.hpp     # Общие типы данных
+│   └── validator/        # Валидаторы
+│       ├── env_validator.hpp    # Валидатор .env переменных
+│       └── validator.hpp        # Валидатор входящих и исходящих данных
 ├── src/                   # Исходный код
 │   ├── main.cpp          # Точка входа и конфигурация приложения
 │   ├── http/             # Реализация HTTP компонентов
